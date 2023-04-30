@@ -1,0 +1,17 @@
+.navBar{
+    list-style-type: none;
+   
+}
+.navBar li{
+    margin: 0px 4px ;
+    padding:4px 4px;
+    border-radius:0.2rem;
+}
+.navBar li a {
+    text-decoration: none !important;
+    
+}
+.navBar li:hover{
+   
+    background-color: rgb(213, 207, 207);
+}

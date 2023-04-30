@@ -1,0 +1,75 @@
+extends layout
+
+block content
+  div.mx-4.py-2
+    h1 Products
+    div.row
+      div.col-md-3
+        h3 Filters
+        form(action="/products", method="get")
+          div.form-group
+            label(for="category") Category
+            select.form-control(name="category")
+              option(value="all") All
+              option(value="clothing") Clothing
+              option(value="electronics") Electronics
+              option(value="books") Books
+          div.form-group
+            label(for="brand") Brand
+            select.form-control(name="brand")
+              option(value="all") All
+              option(value="nike") Nike
+              option(value="apple") Apple
+              option(value="sony") Sony
+          div.form-group
+            label(for="price") Price
+            input.form-control(type="number" name="price" placeholder="Enter max price")
+          button.btn.btn-primary(type="submit") Apply Filters
+
+      div.col-md-9
+        div.row.mb-3
+          div.col-md-6
+            form(action="/products", method="get")
+              div.input-group
+                input.form-control(type="text" name="search" placeholder="Search products")
+                div.input-group-append
+                  button.btn.btn-primary(type="submit")
+                    i.fas.fa-search
+
+          div.col-md-6.text-right
+            form(action="/products", method="get")
+              div.form-group 
+                select.form-control(name="sort")
+                  option(value="#") Sort products
+                  option(value="price_desc") Price (high to low)
+                  option(value="price_asc") Price (low to high)
+                  option(value="name_asc") Name (A-Z)
+                  option(value="name_desc") Name (Z-A)
+
+        .row.row-cols-1.row-cols-md-3.g-4
+          each product in products
+            .col
+              .card.h-100
+                img(src='https://picsum.photos/1920/1080?random=1', alt=product.name, class="card-img-top")
+                .card-body
+                  h5.card-title #{product.name}
+                  p.card-text #{product.description}
+                .card-footer
+                  .row
+                    .col-6.text-start
+                      a.btn.btn-outline-success.py-0(href=`/products/${product.id}`) View
+                    .col-6.text-center
+                      p.card-text.text-end
+                        small.text-muted Price: $#{product.price}
+                  
+        nav.mt-4
+          ul.pagination.justify-content-center
+            li.page-item(class=currentPage == 1 ? "disabled" : "")
+              a.page-link(href=`/products?page=${currentPage-1}${search}${category}${sort}`) Previous
+            - for (let i = 1; i <= totalPages; i++) {
+              li.page-item(class=i == currentPage ? "active" : "")
+                a.page-link(href=`/products?page=${i}${search}${category}${sort}`) #{i}
+            - }
+            li.page-item(class=currentPage == totalPages ? "disabled" : "")
+              a.page-link(href=`/products?page=${currentPage+1}${search}${category}${sort}`) Next
+

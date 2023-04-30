@@ -1,0 +1,87 @@
+extends layout
+
+block content
+  // Hero section
+  .jumbotron.jumbotron-fluid.text-white
+    .container-fluid
+      .row
+          // Carousel
+          #heroCarousel.carousel.slide(data-bs-ride='carousel')
+            // Indicators
+            ol.carousel-indicators
+              li(data-bs-target='#heroCarousel', data-bs-slide-to='0', class='active')
+              li(data-bs-target='#heroCarousel', data-bs-slide-to='1')
+
+            // Slides
+            .carousel-inner
+              // First slide
+              .carousel-item.active.text-center
+                img.d-block.w-100(src='https://picsum.photos/1920/1080?random=1', alt='First slide')
+                .carousel-caption.d-none.d-md-block
+                    
+                  h1(display-3).mb-0.bg-black.my-0 Welcome to Our Store
+                  p(lead).mb-5.bg-black We sell the best products you can find on the web!
+
+                  h3 Slide 1
+                  p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+              // Second slide
+              .carousel-item
+                img.d-block.w-100(src='https://picsum.photos/1920/1080?random=2', alt='Second slide')
+                .carousel-caption.d-none.d-md-block
+                  h3 Slide 2
+                  p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+            // Controls
+            a.carousel-control-prev(href='#heroCarousel', role='button', data-bs-slide='prev')
+              span.carousel-control-prev-icon(aria-hidden='true')
+              span.sr-only Previous
+            a.carousel-control-next(href='#heroCarousel', role='button', data-bs-slide='next')
+              span.carousel-control-next-icon(aria-hidden='true')
+              span.sr-only Next
+          a.btn.btn-success.btn-lg.w-25.my-4.mx-auto(href='/products') Shop Now
+
+  // Frequently seen products section
+  .container-fluid.bg-light.py-5
+    h2.text-center.mb-6.pb-3 Frequently seen products
+    .container
+      .row.text-center
+        each product in products
+          .col-md-3.mb-3
+            img.img-fluid(src='https://picsum.photos/1920/1080?random=3', alt=product.name)
+            h4.mb-1 #{product.name}
+            p.text-muted.mb-1 #{product.description}
+            p.lead.mb-0 $#{product.price.toFixed(2)}
+
+  // Promotion section
+  .container-fluid.bg-success.text-white.text-center.py-5
+    .container
+      h2.mb-4 Get 20% off your first order!
+      p.lead.mb-0 Use code: WELCOME20 at checkout
+
+  // News section
+  .container-fluid.bg-white.py-5
+    .container
+      h2.text-center.mb-5 Our Latest News
+      .row
+        each news in newsItems
+          .col-md-4
+            .card.mb-4
+              img.card-img-top.h-2(src='https://picsum.photos/1920/1080?random=7', alt=news.title)
+              .card-body
+                h4.card-title #{news.title}
+                p.card-text #{news.description}
+                a.btn.btn-outline-success(href=news.link) Read More
+
+  // Testimonial section
+  .container-fluid.bg-light.py-5
+    .container
+      h2.text-center.mb-5 What Our Customers Say
+      .row.text-center
+        each testimonial in testimonials
+          .col-md-4.mb-4
+            .card
+              .card-body
+                p.card-text #{testimonial.text}
+                h4.card-title #{testimonial.name}
+                p.card-text.text-muted #{testimonial.company}

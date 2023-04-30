@@ -7,7 +7,7 @@ import productViewRouter from './src/routes/productViewRoutes.js'
 import navRoutes from './src/routes/navRoutes.js'
 import Product from './src/models/product.js'
 import path from 'path'
-import db from './config/database.js'
+import db from './src/config/database.js'
 
 const app = express()
 

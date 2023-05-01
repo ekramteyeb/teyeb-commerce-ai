@@ -61,7 +61,9 @@ router.get('/', async (req, res) => {
         company: 'Guraze',
       },
     ]
-    const products = await Product.find()
+    const productss = await Product.find()
+    const products = productss.filter((p, i) => i < 8 && i % 2 == 0)
+    
     res.render('home', { products, newsItems, testimonials })
   } catch (err) {
     res.status(500).json({ message: err.message })

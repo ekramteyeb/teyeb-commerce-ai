@@ -16,22 +16,22 @@ const router = express.Router()
 // Route for displaying paginated products
 router.get('/', (req, res) => {
   // Get the limit parameter from the request query or use a default value
-  const limit = parseInt(req.query.limit) || 10
-
+  const limit = parseInt(req.query.limit) || 10;
+  
   // Get the current page number from the request query or use the first page
-  const currentPage = parseInt(req.query.page) || 1
-
+  const currentPage = parseInt(req.query.page) || 1;
+  
   // Calculate the offset based on the limit and the current page number
-  const offset = (currentPage - 1) * limit
-
+  const offset = (currentPage - 1) * limit;
+  
   // Query the database to get the products based on the limit and offset
-
+  
   Product.find()
     .skip(offset)
     .limit(limit)
-    .then((products) => {
+    .then(products => {
       // Calculate the total number of pages based on the number of products and the limit
-      const totalPages = Math.ceil(products && products.length / limit)
+      const totalPages = Math.ceil(products && products.length / limit);
       const pages = totalPages
       // Render the products template with the products, current page number, total pages, and limit
       res.render('products', {
@@ -39,14 +39,14 @@ router.get('/', (req, res) => {
         currentPage,
         totalPages,
         pages,
-        limit,
-      })
+        limit
+      });
     })
-    .catch((err) => {
-      console.error(err)
-      res.status(500).send('Error retrieving products')
-    })
-})
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error retrieving products');
+    });
+});
 
 // Get single product
 router.get('/:id', async (req, res) => {

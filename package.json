@@ -5,7 +5,8 @@
   "author": "teyeb-hussen",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "dev":"nodemon app.js",
     "build": "webpack --mode production",
     "prettier": "prettier --write \"**/*.js\""
   },

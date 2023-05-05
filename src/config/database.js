@@ -3,10 +3,10 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const MONGODB_URI_LOCAL = process.env.MONGODB_URI_LOCAL
+//const MONGODB_URI_LOCAL = process.env.MONGODB_URI_LOCAL
+const MONGODB_URI_PROD = process.env.MONGODB_URI_PROD
 
-//mongoose.connect('mongodb://localhost/mydatabase', { useNewUrlParser: true })
-mongoose.connect(MONGODB_URI_LOCAL, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI_PROD, { useNewUrlParser: true })
 
 const db = mongoose.connection
 

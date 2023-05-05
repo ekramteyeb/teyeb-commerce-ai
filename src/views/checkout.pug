@@ -1,0 +1,75 @@
+extends layout
+
+block content
+  .container.w-75.m-auto
+    .row.justify-content-center
+      
+      .col-lg-6.mt-4
+        h1.text-center Checkout
+        form(action="/checkout" method="post")
+          .row
+            .col-md-12
+              .mb-3
+                label(for="firstName") First name
+                input(type="text" class="form-control" id="firstName" placeholder="" value="" required="")
+          .row
+            .col-md-12
+              .mb-3
+                label(for="lastName") Last name
+                input(type="text" class="form-control" id="lastName" placeholder="" value="" required="")
+          .row
+            .col-md-12
+              .mb-3
+                label(for="email") Email
+                input(type="email" class="form-control" id="email" placeholder="you@example.com" required="")
+          .row
+            .col-md-12
+              .mb-3
+                label(for="address") Address
+                input(type="text" class="form-control" id="address" placeholder="1234 Main St" required="")
+          .row
+            .col-md-12
+              .mb-3
+                label(for="address2") Address 2
+                input(type="text" class="form-control" id="address2" placeholder="Apartment or suite" value="")
+          .row
+            .col-md-6
+              .mb-3
+                label(for="country") Country
+                select(class="form-control" id="country" required="")
+                  option(value="") Choose...
+                  option(value="United States") United States
+                  option(value="Canada") Canada
+          .row
+            .col-md-6
+              .mb-3
+                label(for="zip") Zip
+                input(type="text" class="form-control" id="zip" placeholder="" required="")
+          hr(class="mb-4")
+          h4(class="mb-3") Payment
+          .d-block.my-3
+            .custom-control.custom-radio
+              input#credit(type="radio" name="paymentMethod" value="credit" checked="" required="")
+              label(for="credit") Credit card
+            .custom-control.custom-radio
+              input#debit(type="radio" name="paymentMethod" value="debit" required="")
+              label(for="debit") Debit card
+            .custom-control.custom-radio
+              input#paypal(type="radio" name="paymentMethod" value="paypal" required="")
+              label(for="paypal") PayPal
+          .row
+            .col-md-6.mb-3
+              label(for="cc-name") Name on card
+              input(type="text" class="form-control" id="cc-name" placeholder="" required="")
+              small(class="text-muted") Full name as displayed on card
+            .col-md-6.mb-3
+              label(for="cc-number") Credit card number
+              input(type="text" class="form-control" id="cc-number" placeholder="" required="")
+            .col-md-3.mb-3
+              label(for="cc-expiration") Expiration
+              input(type="text" class="form-control" id="cc-expiration" placeholder="" required="")
+            .col-md-3.mb-3
+              label(for="cc-cvv") CVV
+              input(type="text" class="form-control" id="cc-cvv" placeholder="" required="")
+          hr(class="mb-4")
+          button(class="btn btn-primary btn-lg btn-block" type="submit") Continue to checkout

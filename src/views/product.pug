@@ -6,10 +6,12 @@ block content
       a.col-4.btn.btn-outline-success.mx-4(href='/products') GO Back 
     img.w-50.mx-auto(src='https://picsum.photos/1920/1080?random=1')
     p= product.description
-    p= product.category
+    p= product.category 
     p.price= product.price
     form(action="/cart" method="post")
       input(type="hidden" name="product_id" value=product._id)
+      input(type="hidden"  name="price" value=product.price)
+      input(type="hidden"  name="user_id" value=`${sessionStorage.getItem('userId')}`)
       input.py-1.br-4.col-2(type="number" name="quantity" min="1" value="1" aria-describedby="inputHelp")
       button.col-4.btn.btn-outline-success(type="submit") Add to Cart
 

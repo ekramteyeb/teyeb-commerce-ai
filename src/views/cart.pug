@@ -1,0 +1,116 @@
+.container-fluid
+  .row
+    //include includes/sidebar
+    .col-md-9.ml-sm-auto.col-lg-10.px-md-4
+  #cart.offcanvas(style="top:0;min-width:50%")
+    .offcanvas-header.bg-success(style="height:60px;")
+      h5.cart-title
+        i.fa.fa-shopping-cart.mr-8
+        | Shopping Cart
+
+      button.close(type='button' aria-label='Close')
+        span(aria-hidden='true') &times;
+    .offcanvas-body
+      if 1 === 0
+        p Your cart is empty.
+      else
+        table.table.table-striped.table-hover
+          thead
+            tr
+              th Product
+              th Quantity
+              th Price
+              th Total 
+              th Action
+          tbody#mybody
+        h4#totalcart.mt-4.mb-3
+        .text-center
+          a.btn.btn-primary(href='/cart/checkout') Proceed to Checkout
+      
+      
+  
+script.
+  $(document).ready(function() {
+    $.ajax({
+      url: '/cart',
+      method: 'GET',
+      success: function(data) {
+       
+        // Set variable with data
+        var items = data && data.items;
+        
+        // Generate HTML elements with data
+        var listItems = items && items.map(function(item) {
+          return '<tr>' +
+            '<td>' + item._id + '</td>' +
+            '<td>' + 
+                `
+                <select name="quantity" value=${item.quantity}>
+                  <option value=1 selected=this.value = ${item.quantity}> 1 </option>
+                  <option value=2> 2 </option>
+                  <option value=3> 3 </option>
+                </select>
+                  
+                `
+                + 
+            '</td>' +
+            '<td>' + item.price + '</td>' +
+            '<td>' + item.quantity * item.price  + '</td>' +
+            '<td>' + 
+              `<form 
+                  action="/cart/remove" 
+                  method="POST">
+                    <input type="hidden" name="id" value=${item._id}>
+                    <button class="btn btn-danger btn-sm">Remove</button>
+              </form>`  + 
+            '</td>'
+          + '</tr>';
+        }).join('');
+        var total = `Total : ${ data ?  data.total  : 0 }  €`;
+        // Add HTML elements to page
+        $('#mybody').html(listItems );
+        $('#totalcart').html(total)
+      },
+      error: function(err) {
+        // Handle error
+        console.log('something went wrong with cart')
+        //console.error(err);
+      }
+    });
+  });
+
+// Include cart.js library
+
+//script(src='https://cdn.jsdelivr.net/npm/cartjs')
+
+// Initialize cart
+script.
+  
+  var cart = new CartJS('mycart');
+
+  // Add to cart
+  $(document).on('click', '[data-product]', function() {
+    var productId = $(this).data('product');
+    var action = $(this).data('action');
+    var quantity = 1;
+    
+    
+    if (action === 'decrease') {
+      quantity = -1;
+    }
+    if(action == 'increase'){
+      quantity = +1;
+    }
+    
+    cart.updateItem(productId, quantity);
+  });
+
+  // Remove from cart
+  $(document).on('click', '[data-action="remove"]', function() {
+    var productId = $(this).data('product');
+    cart.removeItem(productId);
+  });
+
+  
+
+  

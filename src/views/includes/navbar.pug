@@ -10,10 +10,10 @@ nav.mx-4.my-0.py-0.navbar.navbar-expand-xl.navbar-light
       li.nav-item
         a.nav-link(href='/products') Shop
       li.nav-item
-        a.nav-link(href='contact') Contact
+        a.nav-link(href='/contact') Contact
       li.nav-item
       li.nav-item
-        a.nav-link(href='about') About
+        a.nav-link(href='/about') About
       li.nav-item
       li.nav-item.dropdown
         a.nav-link.dropdown-toggle(href='#', id='navbarDropdown', role='button', data-bs-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Categories
@@ -22,9 +22,29 @@ nav.mx-4.my-0.py-0.navbar.navbar-expand-xl.navbar-light
           a.dropdown-item(href='#') Category 2
           a.dropdown-item(href='#') Category 3
     ul.navbar-nav.ml-auto
+      li.nav-item.text-center
+      if (session && session.user)
+        a.text-bold.nav-link(href='/auth/dashboard') Welcome, #{session.user.name}!
+      else
+        a.nav-link(href='/auth/login') Login
       li.nav-item
-        a.nav-link(href='#') Cart
-      li.nav-item
-        a.nav-link(href='#') Login
+        button#cartButtonLink.nav-link.btn
+          i.fa.fa-shopping-cart
+        //button#cartButtonLink.nav-link(type="submit" formaction="/carts" formmethod="POST") Cart
+      
       li.nav-item
         a.nav-link(href='#') <i class='fa fa-user'></i>
+
+script.
+    $(document).ready(function() {
+      var $cart = $('#cart');
+      var $cartButton = $('#cartButtonLink');
+      $cartButton.click(function() {
+        $cart.addClass('show');
+        $cart.animate({right: '0'}, 'slow');
+      });
+      $cart.find('.close').click(function() {
+        $cart.removeClass('show');
+        $cart.animate({right: '-300px'}, 'slow');
+      });
+    });

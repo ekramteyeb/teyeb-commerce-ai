@@ -26,10 +26,18 @@ const productSchema = new mongoose.Schema(
       ref: 'Category',
       required: false,
     },
-    photo: {
-      data: Buffer,
-      contentType: String,
-    },
+    images: [
+      {
+        data: Buffer,
+        contentType: String,
+      },
+    ],
+    relatedProducts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
   },
   { timestamps: true }
 )

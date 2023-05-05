@@ -7,6 +7,7 @@ const router = express.Router()
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find()
+    
     res.render('products/index', { products })
   } catch (err) {
     res.status(500).json({ message: err.message })
@@ -16,8 +17,13 @@ router.get('/', async (req, res) => {
 // Get single product
 router.get('/:id', async (req, res) => {
   try {
+     console.log( 'related products')
     const product = await Product.findById(req.params.id)
-    res.render('products/show', { product })
+    const relatedProducts = await Product.find().filter(
+      (prod) => prod.price % 5 == 0
+    )
+   
+    res.render('products/show', { product, relatedProducts })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }

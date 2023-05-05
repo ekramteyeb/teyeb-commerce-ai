@@ -23,9 +23,10 @@ export const addItemToCart = async (req, res) => {
       }
       await cart.calculateTotal()
       const updatedCart = await Cart.findOne({
-        user: req.body.user._id,
+        user: req.body.user_id,
       }).populate('items.product', '_id name price')
       res.status(201).json(updatedCart)
+      res.render('/products')
     } else {
       // If the user's cart doesn't exist, create it
       const newCart = await Cart.create({
@@ -37,6 +38,7 @@ export const addItemToCart = async (req, res) => {
       }).populate('items.product', '_id name price')
 
       res.status(201).json(createdCart)
+      res.render('/products')
     }
   } catch (error) {
     console.log(error)
@@ -47,7 +49,9 @@ export const addItemToCart = async (req, res) => {
 // Get cart items
 export const getCartItems = async (req, res) => {
   try {
-    const userId = req.body.user &&  new ObjectId(req.body.user_id)
+    console.log(req.session.user, 'user from cart')
+    //const userId = req.session.id &&  new ObjectId(req.session.id)
+    const userId = req.session.user.id &&  req.session.user.id
     const cart = await Cart.findOne({ user: userId }).populate(
       'items.product',
       '_id name price'

@@ -1,17 +1,46 @@
 extends layout
 
 block content
-  div.mx-4.col-12.py-2
-    h1= product.name 
-      a.col-4.btn.btn-outline-success.mx-4(href='/products') GO Back 
-    img.w-50.mx-auto(src='https://picsum.photos/1920/1080?random=1')
-    p= product.description
-    p= product.category 
-    p.price= product.price
-    form(action="/cart" method="post")
-      input(type="hidden" name="product_id" value=product._id)
-      input(type="hidden"  name="price" value=product.price)
-      input(type="hidden"  name="user_id" value=`${sessionStorage.getItem('userId')}`)
-      input.py-1.br-4.col-2(type="number" name="quantity" min="1" value="1" aria-describedby="inputHelp")
-      button.col-4.btn.btn-outline-success(type="submit") Add to Cart
-
+  .container.mt-5
+    .row 
+      h1= product.name
+      .col-md-6
+        .carousel.slide(data-bs-ride='carousel', id='productCarousel')
+          .carousel-inner
+            each image in [1, 2, 3, 4, 5]
+              if image === 1
+                .carousel-item.active
+                  img.d-block.w-100(src="https://picsum.photos/1920/1080?random=4")
+              else
+                .carousel-item
+                  img.d-block.w-100(src="https://picsum.photos/1920/1080?random=1")
+          a.carousel-control-prev(href='#productCarousel', role='button', data-bs-slide='prev')
+            span.carousel-control-prev-icon(aria-hidden='true')
+            span.sr-only Previous
+          a.carousel-control-next(href='#productCarousel', role='button', data-bs-slide='next')
+            span.carousel-control-next-icon(aria-hidden='true')
+            span.sr-only Next
+      .col-md-6
+        h2.mb-3 #{product.title}
+        p.lead #{product.description}
+        form(action='/cart', method='POST')
+          input(type='hidden', name='productId', value=`${product._id}`)
+          input(type='hidden', name='productTitle', value=`${product.title}`)
+          input(type='hidden', name='productPrice', value=`${product.price}`)
+          label(for='quantity') Quantity:
+          input#quantity.form-control(type='number', name='productQuantity', min='1', value='1', required)
+          button.btn.btn-success.my-2(type='submit') Add to Cart
+    hr
+    div
+    h6  Releated Products 
+    .row
+      
+        //each relatedProduct in relatedProducts // temporarly tricked
+        each relatedProduct in [{title:"T-shirt", description:"good",id:23},{title:"Shirt", description:"excellent ",id:25},{title:"Mobile", description:"very good",id:24}]
+          .col-md-3.mb-3
+            .card
+              img.card-img-top(src="https://picsum.photos/1920/1080?random=3", alt="randomName")
+              .card-body
+                h5.card-title #{relatedProduct.title}
+                p.card-text #{relatedProduct.description}
+                a.btn.btn-success(href=`/products/${relatedProduct._id}`) Learn More

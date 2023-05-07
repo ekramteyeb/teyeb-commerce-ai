@@ -90,11 +90,23 @@ app.use('/auth', authRouter)
 //users routes
 app.use('/users', userRoutes)
 
-// Error handling
+// Error handling : unavailable routes , etc
 app.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).send('Something broke!')
 })
+const handleUnavailableRoutes = (req, res, next) => {
+  const error = new Error('Page Not Found')
+  error.status = 404
+  next(error)
+}
+app.use(handleUnavailableRoutes)
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500)
+  res.render('error', { error: err.message })
+})
+
 // Start server
 const port = process.env.PORT || 3008
 

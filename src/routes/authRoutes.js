@@ -184,4 +184,6 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
   console.log(user, 'user form profile. ')
   res.render('profile', { user })
 })
+
+
 export default router

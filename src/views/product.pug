@@ -3,7 +3,8 @@ extends layout
 block content
   .container.mt-5
     .row 
-      h1= product.name
+      h1.mb-4= product.name 
+        a.btn.btn-success.mx-4(href='/products') Go Back
       .col-md-6
         .carousel.slide(data-bs-ride='carousel', id='productCarousel')
           .carousel-inner
@@ -34,7 +35,6 @@ block content
     div
     h6  Releated Products 
     .row
-      
         //each relatedProduct in relatedProducts // temporarly tricked
         each relatedProduct in [{title:"T-shirt", description:"good",id:23},{title:"Shirt", description:"excellent ",id:25},{title:"Mobile", description:"very good",id:24}]
           .col-md-3.mb-3

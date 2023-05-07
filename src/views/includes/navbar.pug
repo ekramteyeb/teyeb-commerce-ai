@@ -24,7 +24,7 @@ nav.mx-4.my-0.py-0.navbar.navbar-expand-xl.navbar-light
     ul.navbar-nav.ml-auto
       li.nav-item.text-center
       if (session && session.user)
-        a.text-bold.nav-link(href='/auth/dashboard') Welcome, #{session.user.name}!
+        a.text-bold.nav-link(href='/auth/profile') Welcome, #{session.user.name}!
       else
         a.nav-link(href='/auth/login') Login
       li.nav-item

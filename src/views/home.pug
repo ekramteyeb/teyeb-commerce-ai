@@ -52,7 +52,8 @@ block content
       .row.text-center
         each product in products
           .col-md-3.mb-3
-            img.img-fluid(src='https://picsum.photos/1920/1080?random=3', alt=product.name)
+            a(href=`/products/${product._id}`)
+              img.img-fluid(src='https://picsum.photos/1920/1080?random=3', alt=product.name)
             h4.mb-1 #{product.name}
             p.text-muted.mb-1 #{product.description}
             p.lead.mb-0 $#{product.price.toFixed(2)}

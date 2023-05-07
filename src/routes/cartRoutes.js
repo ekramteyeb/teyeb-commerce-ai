@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
   res.status(200).json(cart)
 })
 
-router.get('/checkout', renderCheckout)
+router.get('/checkout', ensureAuthenticated,  renderCheckout)
 
 //render cart items display /carts
 //router.get('/carts', renderCartItems)

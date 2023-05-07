@@ -85,7 +85,7 @@ export const renderCheckout = async (req, res) => {
   try {
     // convert string to ObjectId
     const userId = req.body.user && new ObjectId(req.body.user_id)
-
+    console.log(req.user, ' user check out')
     const cart = await Cart.findOne({ user: userId }).populate(
       'items.product',
       '_id name price'

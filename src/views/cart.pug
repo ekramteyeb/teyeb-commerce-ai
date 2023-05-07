@@ -26,6 +26,8 @@
         h4#totalcart.mt-4.mb-3
         .text-center
           a.btn.btn-success.my-2(href='/cart/checkout') Proceed to Checkout
+          a.btn.btn-info.my-2.mx-2(href='#') Update Cart
+          
       
       
   
@@ -45,11 +47,8 @@ script.
             '<td>' + item._id + '</td>' +
             '<td>' + 
                 `
-                <select name="quantity" value=${item.quantity}>
-                  <option value=1 selected=this.value = ${item.quantity}> 1 </option>
-                  <option value=2> 2 </option>
-                  <option value=3> 3 </option>
-                </select>
+                
+                <input id="quantity" class="form-control w-50" type="number" name="productQuantity" value=${item.quantity}>
                   
                 `
                 + 

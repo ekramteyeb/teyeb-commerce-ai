@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-md-8.offset-md-2
+        .card
+          .card-body
+            h2.text-center User Profile
+            hr
+            .row
+              .col-md-6
+                h4 Personal Information
+                p Name: #{user.name}
+                p Email: #{user.email}
+                p Phone: #{user.phone}
+              .col-md-6
+                h4 Shipping Address
+                p Address: #{user.address}
+                p City: #{user.city}
+                p Country: #{user.country}
+            .col-md-12.text-center
+             a.btn.btn-success.btn-lg.mt-5 Edit profile
+            hr
+            h4 Order History
+            if user.orders && user.orders.length > 0 || true
+              table.table.table-striped
+                thead
+                  tr
+                    th Order ID
+                    th Order Date
+                    th Total Amount
+                tbody
+                  each order in [{id:222, date:'22.03.2022', totalAmount:450},{id:223, date:'02.09.2022', totalAmount:950}]
+                    tr
+                      td #{order.id}
+                      td #{order.date}
+                      td #{order.totalAmount}
+            else
+              p.text-center No order history found.

@@ -125,8 +125,8 @@ router.post('/login', (req, res, next) => {
         name: user.name,
         email: user.email,
       }
-      console.log(user, 'session user in login post')
-      return res.redirect('/auth/dashboard')
+      
+      return res.redirect(user.isAdmin ? '/auth/dashboard' : '/products')
     })
   })(req, res, next)
 })
@@ -178,5 +178,10 @@ router.get('/logout', (req, res) => {
       res.redirect('/auth/login')
     })
   })
+})
+router.get('/profile', ensureAuthenticated, (req, res) => {
+  const user = req.session.user
+  console.log(user, 'user form profile. ')
+  res.render('profile', { user })
 })
 export default router

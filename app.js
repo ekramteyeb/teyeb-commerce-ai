@@ -7,11 +7,11 @@ import flash from 'connect-flash'
 import LocalStrategy from 'passport-local'
 import configurePassport from './src/config/passport.js'
 import session from 'express-session'
-import  MemoryStore from 'memorystore'
+import MemoryStore from 'memorystore'
 
 import productRouter from './src/routes/productApiRoutes.js'
 import productViewRouter from './src/routes/productViewRoutes.js'
-import cartRouter from './src/routes/cartRoutes.js'
+import cartRouter from './src/routes/cartViewRoutes.js'
 import cartApiRouter from './src/routes/cartApiRoutes.js'
 import navRoutes from './src/routes/navRoutes.js'
 import userRoutes from './src/routes/userRoutes.js'
@@ -19,7 +19,7 @@ import authRouter from './src/routes/authRoutes.js'
 import Product from './src/models/product.js'
 import path from 'path'
 import db from './src/config/database.js'
-import { renderCartItems } from './src/controllers/cart/cartController.js'
+//import { renderCartItems } from './src/controllers/cart/cartViewController.js'
 
 const app = express()
 
@@ -34,7 +34,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     /* cookie: { secure: true }, */ //think how to use this line :)
-    store: store
+    store: store,
   })
 )
 // make session available in all pug files
@@ -80,7 +80,8 @@ app.use('/api/products', productRouter)
 app.use('/products', productViewRouter)
 //cart view routes
 app.use('/cart', cartRouter)
-app.use('/carts', renderCartItems)
+app.use('/api/carts', cartApiRouter)
+//app.use('/carts', renderCartItems)
 //cart api routes
 //app.use('/api/carts', cartApiRouter)
 //vav pages routes

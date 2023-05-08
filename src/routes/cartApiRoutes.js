@@ -1,23 +1,18 @@
-/* import express from 'express'
-//import { protect } from '../middleware/authMiddleware'
+import express from 'express'
+import  { isAdmin }  from '../middlewares/auth.js'
 import {
+  getAllCarts,
   getCart,
-  addToCart,
-  updateCartItem,
-  removeCartItem,
-} from '../controllers/cart/cartApiController.js'
+  deleteCart, 
+  removeAllCarts,
+} from '../controllers/cart/catApiController.js'
 
 const router = express.Router()
 
-/* router.get('/', protect, getCart)
-router.post('/', protect, addToCart)
-router.put('/:id', protect, updateCartItem)
-router.delete('/:id', protect, removeCartItem) */
+router.get('/', getAllCarts)
+router.get('/:id', getCart)
+router.delete('/',isAdmin, removeAllCarts)
+router.delete('/:id',isAdmin, deleteCart)
 
-/* router.get('/',  getCart)
-router.post('/', addToCart)
-router.put('/:id', updateCartItem)
-router.delete('/:id', removeCartItem) */
-const router = ''
 export default router 
  

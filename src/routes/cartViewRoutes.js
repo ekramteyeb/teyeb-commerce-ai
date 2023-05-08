@@ -3,18 +3,21 @@ import {
   addItemToCart,
   getCartItems,
   renderCheckout,
-} from '../controllers/cart/cartController.js'
-import { ensureAuthenticated } from '../config/auth.js'
+} from '../controllers/cart/cartViewController.js'
+import { ensureAuthenticated } from '../middlewares/auth.js'
 //import auth from '../middleware/auth'
 
 const router = express.Router()
 
 // Add item to cart
+//router.post('/cart', auth, addItemToCart)
+router.post('/', ensureAuthenticated, addItemToCart)
 
-//for non logged in user 
+//for none logged in user
+
 router.post('/', (req, res) => {
-  const { id, name, price } = req.body
-  const cartItem = { id, name, price }
+  const { id, name, price, quantity } = req.body
+  const cartItem = { id, name, price, quantity }
 
   if (!req.session.cart) {
     req.session.cart = []
@@ -25,20 +28,16 @@ router.post('/', (req, res) => {
   res.redirect('/cart')
 })
 
-//router.post('/cart', auth, addItemToCart)
-router.post('/', ensureAuthenticated, addItemToCart)
-
-
 // Get cart items
 router.get('/', ensureAuthenticated, getCartItems)
-
+//for non logged in user get cart items
 router.get('/', (req, res) => {
   const cart = req.session.cart || []
   //res.render('cart', { cart })
   res.status(200).json(cart)
 })
 
-router.get('/checkout', ensureAuthenticated,  renderCheckout)
+router.get('/checkout', ensureAuthenticated, renderCheckout)
 
 //render cart items display /carts
 //router.get('/carts', renderCartItems)

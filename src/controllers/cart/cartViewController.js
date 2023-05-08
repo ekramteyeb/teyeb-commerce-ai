@@ -5,40 +5,43 @@ import Cart from '../../models/cart.js'
 // Add item to cart
 export const addItemToCart = async (req, res) => {
   try {
-    const { product, quantity, price } = req.body
-    console.log(req.body, 'user in cart ')
-    const cart = await Cart.findOne({ user: req.body.user_id })
+    const { id, quantity,name, price } = req.body
+    console.log(req.body, 'req body  in cart ')
+    const user = req.user._id
+    const cart = await Cart.findOne({ user: user })
 
     if (cart) {
       // If the user's cart already exists, update it
       const itemIndex = cart.items.findIndex(
-        (item) => item._id.toString() === product
+        (item) => item._id.toString() === id
       )
       if (itemIndex > -1) {
         // If the product already exists in the cart, increase its quantity
         cart.items[itemIndex].quantity += quantity
       } else {
         // If the product doesn't exist in the cart, add it
-        cart.items.push({ product, quantity, price })
+        cart.items.push({ id,name, price, quantity})
       }
       await cart.calculateTotal()
+
       const updatedCart = await Cart.findOne({
-        user: req.body.user_id,
-      }).populate('items.product', '_id name price')
-      res.status(201).json(updatedCart)
-      res.render('/products')
+        user: user,
+      }).populate('items.product', '_id name price quantity')
+      //res.status(201).json(updatedCart)
+       console.log(updatedCart, 'updated cart ')
+      res.redirect('products')
     } else {
       // If the user's cart doesn't exist, create it
       const newCart = await Cart.create({
-        user: req.body.user_id,
-        items: [{ product, price, quantity }],
+        user: user,
+        items: [{ id, price, name, quantity }],
       })
       const createdCart = await Cart.findOne({
-        user: req.body.user_id,
-      }).populate('items.product', '_id name price')
-
-      res.status(201).json(createdCart)
-      res.render('/products')
+        user: user,
+      }).populate('items.product', '_id name price quantity')
+      console.log(createdCart , 'created cart ')
+      //res.status(201).json(createdCart)
+      res.redirect('/products')
     }
   } catch (error) {
     console.log(error)
@@ -49,14 +52,14 @@ export const addItemToCart = async (req, res) => {
 // Get cart items
 export const getCartItems = async (req, res) => {
   try {
-    console.log(req.session.user, 'user from cart')
+    
     //const userId = req.session.id &&  new ObjectId(req.session.id)
-    const userId = req.session.user.id &&  req.session.user.id
+    const userId = req.session.user.id && req.session.user.id
     const cart = await Cart.findOne({ user: userId }).populate(
       'items.product',
-      '_id name price'
+      '_id name price quantity'
     )
-
+    
     res.status(200).json(cart)
   } catch (error) {
     console.log(error)
@@ -64,7 +67,7 @@ export const getCartItems = async (req, res) => {
   }
 }
 
-export const renderCartItems = async (req, res) => {
+/* export const renderCartItems = async (req, res) => {
   try {
     // convert string to ObjectId
     console.log(req.body.user, 'user available')
@@ -79,7 +82,7 @@ export const renderCartItems = async (req, res) => {
     console.log(error)
     res.status(400).json({ error: error.message })
   }
-}
+} */
 
 export const renderCheckout = async (req, res) => {
   try {
@@ -88,7 +91,7 @@ export const renderCheckout = async (req, res) => {
     console.log(req.user, ' user check out')
     const cart = await Cart.findOne({ user: userId }).populate(
       'items.product',
-      '_id name price'
+      '_id name price quantity'
     )
     res.render('checkout', { cart })
   } catch (error) {

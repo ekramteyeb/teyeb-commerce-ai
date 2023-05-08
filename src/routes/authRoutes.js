@@ -4,7 +4,10 @@ import passport from 'passport'
 import bcrypt from 'bcryptjs'
 import User from '../models/user.js'
 
-import { ensureAuthenticated, forwardAuthenticated } from '../config/auth.js'
+import {
+  ensureAuthenticated,
+  forwardAuthenticated,
+} from '../middlewares/auth.js'
 
 // Protected route
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
@@ -14,9 +17,11 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 })
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login', {
-  message:req.flash('error')[0]
-}))
+router.get('/login', forwardAuthenticated, (req, res) =>
+  res.render('login', {
+    message: req.flash('error')[0],
+  })
+)
 
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) =>
@@ -74,7 +79,7 @@ router.post('/register', (req, res) => {
         newUser
           .save()
           .then((user) => {
-            console.log(user , ' user registerd')
+            console.log(user, ' user registerd')
             req.flash('success_msg', 'You are now registered and can log in')
             res.redirect('/auth/login')
           })
@@ -108,7 +113,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res, next) => {
   passport.authenticate('local-strategy', (err, user, info) => {
     if (err) {
-       req.flash('error', 'Invalid email or password')
+      req.flash('error', 'Invalid email or password')
       return next(err)
     }
     if (!user) {
@@ -125,12 +130,11 @@ router.post('/login', (req, res, next) => {
         name: user.name,
         email: user.email,
       }
-      
+
       return res.redirect(user.isAdmin ? '/auth/dashboard' : '/products')
     })
   })(req, res, next)
 })
-
 
 /* router.post('/login', (req, res, next) => {
   passport.authenticate('local-strategy', {
@@ -184,6 +188,5 @@ router.get('/profile', ensureAuthenticated, (req, res) => {
   console.log(user, 'user form profile. ')
   res.render('profile', { user })
 })
-
 
 export default router

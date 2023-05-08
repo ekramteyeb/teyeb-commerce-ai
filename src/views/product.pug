@@ -25,11 +25,11 @@ block content
         h2.mb-3 #{product.title}
         p.lead #{product.description}
         form(action='/cart', method='POST')
-          input(type='hidden', name='productId', value=`${product._id}`)
-          input(type='hidden', name='productTitle', value=`${product.title}`)
-          input(type='hidden', name='productPrice', value=`${product.price}`)
+          input(type='hidden', name='id', value=`${product._id}`)
+          input(type='hidden', name='name', value=`${product.name}`)
+          input(type='hidden', name='price', value=`${product.price}`)
           label(for='quantity') Quantity:
-          input#quantity.form-control(type='number', name='productQuantity', min='1', value='1', required)
+          input#quantity.form-control(type='number', name='quantity', min='1', value='1', defaultValue=`${product.quantity}` required)
           button.btn.btn-success.my-2(type='submit') Add to Cart
     hr
     div

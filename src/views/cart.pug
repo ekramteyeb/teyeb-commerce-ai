@@ -47,7 +47,6 @@ script.
             '<td>' + item.name + '</td>' +
             '<td>' + 
                 `
-                
                 <input id="quantity" class="form-control w-50" type="number" name="productQuantity" value=${item.quantity}>
                   
                 `
@@ -56,12 +55,8 @@ script.
             '<td>' + item.price + '</td>' +
             '<td>' + item.quantity * item.price  + '</td>' +
             '<td>' + 
-              `<form 
-                  action="/cart/remove" 
-                  method="POST">
-                    <input type="hidden" name="id" value=${item._id}>
-                    <button class="btn btn-danger btn-sm">Remove</button>
-              </form>`  + 
+                '<button class="btn btn-danger btn-sm" data-action="remove" data-product="'+ item._id + '">Remove</button>'
+                + 
             '</td>'
           + '</tr>';
         }).join('');
@@ -85,10 +80,12 @@ script.
 // Initialize cart
 script.
   
-  var cart = new CartJS('mycart');
+  //var cart = new CartJS('mycart');
 
   // Add to cart
+  /*
   $(document).on('click', '[data-product]', function() {
+    console.log('am i clicked here')
     var productId = $(this).data('product');
     var action = $(this).data('action');
     var quantity = 1;
@@ -103,11 +100,66 @@ script.
     
     cart.updateItem(productId, quantity);
   });
+  */
+  function updateCart() {
+    $.ajax({
+      url: '/cart',
+      method: 'GET',
+      success: function(data) {
+        // Set variable with data
+        var items = data && data.items;
+
+        // Generate HTML elements with data
+        var listItems = items && items.map(function(item) {
+          return '<tr>' +
+            '<td>' + item.name + '</td>' +
+            '<td>' + 
+                '<input id="quantity" class="form-control w-50" type="number" name="productQuantity" value=' + item.quantity + '>' +
+            '</td>' +
+            '<td>' + item.price + '</td>' +
+            '<td>' + item.quantity * item.price  + '</td>' +
+            '<td>' + 
+                '<button class="btn btn-danger btn-sm" data-action="remove" data-product="' + item._id + '">Remove</button>'
+            '</td>'
+          + '</tr>';
+        }).join('');
+
+        var total = 'Total: ' + (data ? data.total : 0) + ' €';
+
+        // Add HTML elements to page
+        $('#mybody').html(listItems);
+        $('#totalcart').html(total);
+      },
+      error: function(err) {
+        // Handle error
+        console.log('Something went wrong with the cart');
+        // console.error(err);
+      }
+    });
+  }
 
   // Remove from cart
   $(document).on('click', '[data-action="remove"]', function() {
+    
     var productId = $(this).data('product');
-    cart.removeItem(productId);
+    console.log('cliked to remove item id product id cart pug ' , productId)
+    // Send an AJAX request to the server
+    $.ajax({
+    url: '/cart/' + productId,
+    type: 'DELETE',
+    success: function(result) {
+      // Handle the success response
+      console.log(result, 'delete success result ')
+      // For example, you can update the cart view dynamically
+      //$('#cart').html(result.cart);
+      updateCart();
+    },
+    error: function(error) {
+      // Handle the error response
+      console.log(error);
+    }
+  });
+    //cart.removeItem(productId);
   });
 
   

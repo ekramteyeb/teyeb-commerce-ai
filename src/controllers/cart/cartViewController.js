@@ -28,7 +28,7 @@ export const addItemToCart = async (req, res) => {
         user: user,
       }).populate('items.product', '_id name price quantity')
       //res.status(201).json(updatedCart)
-       console.log(updatedCart, 'updated cart ')
+       
       res.redirect('products')
     } else {
       // If the user's cart doesn't exist, create it
@@ -59,7 +59,8 @@ export const getCartItems = async (req, res) => {
       'items.product',
       '_id name price quantity'
     )
-    
+    //assign cart in to session 
+    //req.session.cart = cart
     res.status(200).json(cart)
   } catch (error) {
     console.log(error)
@@ -98,4 +99,37 @@ export const renderCheckout = async (req, res) => {
     console.log(error)
     res.status(400).json({ error: error.message })
   }
+}
+
+export const deletCartItem = async (req, res) => {
+  
+  try {
+    const itemId = req.params.id // Get the item ID from the request parameters
+    
+    const cart = req.session.cart || []
+    const itemIndex = cart.findIndex((item) => item.id === itemId)
+    
+    if (itemIndex !== -1) {
+      cart.splice(itemIndex, 1) // Remove the item from the cart
+    }
+   
+    // Delete the item from the cart database
+    
+    const updatedCart = await Cart.findOneAndUpdate(
+      { user: req.user._id },
+      { $pull: { items: { _id: itemId } } },
+      { new: true }
+    )
+    await updatedCart.calculateTotal()
+    
+     //Cart.methods.calculateTotal()
+    /* req.session.cart = updatedCart
+    console.log(updatedCart, 'updated cart lenght') */
+    res.status(200).json({ message: 'Item removed from cart successfully.', cart: updatedCart })
+    
+    //res.redirect('/cart') // Send a success response
+  } catch (error) {
+    
+  }
+  
 }

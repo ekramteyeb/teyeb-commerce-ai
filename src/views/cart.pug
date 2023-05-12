@@ -142,7 +142,7 @@ script.
   $(document).on('click', '[data-action="remove"]', function() {
     
     var productId = $(this).data('product');
-    console.log('cliked to remove item id product id cart pug ' , productId)
+    
     // Send an AJAX request to the server
     $.ajax({
     url: '/cart/' + productId,

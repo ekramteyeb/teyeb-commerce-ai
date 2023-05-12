@@ -61,6 +61,7 @@ export const getCartItems = async (req, res) => {
     )
     //assign cart in to session 
     //req.session.cart = cart
+    //console.log('get all cart items', cart)
     res.status(200).json(cart)
   } catch (error) {
     console.log(error)

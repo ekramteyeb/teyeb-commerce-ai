@@ -25,7 +25,7 @@
           tbody#mybody
         h4#totalcart.mt-4.mb-3
         .text-center
-          a.btn.btn-success.my-2(href='/cart/checkout') Proceed to Checkout
+          a#checkout.btn.btn-success.my-2(href='/cart/checkout') Proceed to Checkout
           a.btn.btn-info.my-2.mx-2(href='#') Update Cart
           
       
@@ -61,9 +61,17 @@ script.
           + '</tr>';
         }).join('');
         var total = `Total : ${ data ?  data.total  : 0 }  €`;
+        var checkout = ``
         // Add HTML elements to page
         $('#mybody').html(listItems );
         $('#totalcart').html(total)
+
+        if (data.total > 0) {
+          $('#checkout').show(); // Show the element
+        } else {
+          $('#checkout').hide(); // Hide the element
+        }
+        
       },
       error: function(err) {
         // Handle error
@@ -129,6 +137,12 @@ script.
         // Add HTML elements to page
         $('#mybody').html(listItems);
         $('#totalcart').html(total);
+
+        if (data.total > 0) {
+          $('#checkout').show(); // Show the element
+        } else {
+          $('#checkout').hide(); // Hide the element
+        }
       },
       error: function(err) {
         // Handle error
@@ -149,7 +163,6 @@ script.
     type: 'DELETE',
     success: function(result) {
       // Handle the success response
-      console.log(result, 'delete success result ')
       // For example, you can update the cart view dynamically
       //$('#cart').html(result.cart);
       updateCart();

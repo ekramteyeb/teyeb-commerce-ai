@@ -6,7 +6,7 @@ import Cart from '../../models/cart.js'
 export const addItemToCart = async (req, res) => {
   try {
     const { id, quantity,name, price } = req.body
-    console.log(req.body, 'req body  in cart ')
+   
     const user = req.user._id
     const cart = await Cart.findOne({ user: user })
 
@@ -39,7 +39,7 @@ export const addItemToCart = async (req, res) => {
       const createdCart = await Cart.findOne({
         user: user,
       }).populate('items.product', '_id name price quantity')
-      console.log(createdCart , 'created cart ')
+      
       //res.status(201).json(createdCart)
       res.redirect('/products')
     }
@@ -90,12 +90,12 @@ export const renderCheckout = async (req, res) => {
   try {
     // convert string to ObjectId
     const userId = req.body.user && new ObjectId(req.body.user_id)
-    console.log(req.user, ' user check out')
+    
     const cart = await Cart.findOne({ user: userId }).populate(
       'items.product',
       '_id name price quantity'
     )
-    res.render('checkout', { cart })
+    res.render('checkout', { cart , user:req.user})
   } catch (error) {
     console.log(error)
     res.status(400).json({ error: error.message })

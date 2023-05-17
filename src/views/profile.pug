@@ -17,18 +17,53 @@ block content
               hr
             .row
               .col-md-6
-                h4 Personal Information
-                p Name: #{user.name}
-                p Email: #{user.email}
-                p Phone: #{user.phone}
+                form.form.d-none(class="personal-info-form hidden" id="edit-form" action="/auth/editPersonalInfo" method="POST" )
+                  h4 Personal Information
+                  div.form-group
+                    label(for="name") Name
+                    input#name.form-control(name="name" type="text" value=`${user.name}`)
+                  div.form-group
+                    label(for="email") Email
+                    input#email.form-control(name="email" type="email" value=`${user.email}`)
+                  div.form-group
+                    label(for="phone") Phone
+                    input#phone.form-control(name="phone" type="tel" value=`${user.phone ? user.phone : ''}`)
+                    |
+                    br
+                  h4 Shipping Address
+                    |
+                    |
+                  div.form-group
+                      label(for="street") Street
+                      input#street.form-control(name="street" type="text" value=`${user.street ? user.street : ''}`)
+                  div.form-group
+                    label(for="postcode") Post code
+                    input#postcode.form-control(name="postcode" type="text" value=`${user.postcode ? user.postcode : ''}`)
+                  div.form-group
+                    label(for="city") City
+                    input#city.form-control(name="city" type="text" value=`${user.city ? user.city : ''}`)
+                  div.form-group
+                    label(for="country") Country
+                    input#country.form-control(name="country" type="text" value=`${user.country ? user.country : ''}`)
+                  button.btn.btn-primary(type="submit") Save 
+
+              .col-md-12
+                div#user-detail
+                  h4 Personal Information
+                  p Name: #{user.name}
+                  p Email: #{user.email}
+                  p Phone: #{user.phone}
               .col-md-6
-                h4 Shipping Address
-                p Address: #{user.address}
-                p City: #{user.city}
-                p Country: #{user.country}
+
+                div#user-address
+                  h4 Shipping Address
+                  p Street: #{user.street ? user.street : ''}
+                  p Post code: #{user.postcode ? user.postcode : ''}
+                  p City: #{user.city ? user.city : ''}
+                  p Country: #{user.country ? user.country : ''}
+                  
             .col-md-12.text-center
-             a.btn.btn-success.btn-lg.mt-5 Edit profile
-            
+              button.btn.btn-success.btn-lg.mt-5(id="edit-personal-info-btn") Edit profile
             hr
             h4 Order History
             if user.orders && user.orders.length > 0 || true
@@ -46,3 +81,67 @@ block content
                       td #{order.totalAmount}
             else
               p.text-center No order history found.
+  script.
+    $(document).ready(function() {
+      $('#edit-personal-info-btn').click(function() {
+        
+        $('.col-md-6 form').toggleClass('d-none');
+        $('#user-detail').toggleClass('d-none');
+        $('#user-address').toggleClass('d-none');
+      });
+
+      //handle edit form 
+      $('#edit-form').submit(function(e) {
+
+        e.preventDefault(); // Prevent the default form submission
+        
+        var formData = $(this).serializeArray(); // Serialize the form data as an array
+    
+        // Access individual form elements
+       /* formData.forEach(function(field) {
+          console.log(field.name + ': ' + field.value);
+        });
+        */
+       
+        //var url = form.attr('action'); // Get the form action URL
+        var url = "/auth/editPersonalInfo"; // Get the form action URL
+        console.log(url, 'url ');
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData, // Serialize the form data
+          success: function(response) {
+            // Handle the response from the controller
+            
+            console.log(response, 'response ');
+            $('#name').val(response.user.name);
+            $('#phone').val(response.user.phone);
+            $('#street').val(response.user.street);
+            $('#postcode').val(response.user.postcode);
+            $('#city').val(response.user.city);
+            $('#country').val(response.user.country);
+          },
+          error: function(xhr, status, error) {
+            // Handle any errors
+            console.log(error);
+          }
+        });
+      });
+    });
+    /*
+    document.addEventListener('DOMContentLoaded', function() {
+        var submitBtn = document.getElementById('edit-personal-info-btn1');
+        var form1 = document.getElementById('detail-form');
+        //var form2 = document.getElementById('address-form');
+
+        submitBtn.addEventListener('click', function() {
+            form1.submit();
+           // form2.submit();
+        });
+    });
+    */
+
+
+   
+
+  

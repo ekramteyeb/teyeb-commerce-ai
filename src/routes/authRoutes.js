@@ -129,6 +129,7 @@ router.post('/login', (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
       }
 
       return res.redirect(user.isAdmin ? '/auth/dashboard' : '/products')
@@ -183,10 +184,59 @@ router.get('/logout', (req, res) => {
     })
   })
 })
-router.get('/profile', ensureAuthenticated, (req, res) => {
-  const user = req.session.user
-  console.log(user, 'user form profile. ')
+router.get('/profile', ensureAuthenticated, async (req, res) => {
+  //const user = req.session.user
+  /*  try {
+    const user = User.findById(req.session.user.id)
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' })
+    }
+    console.log('user from userRoutes', user)
+    res.json(user)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  } */
+  const user = await User.findById(req.session.user.id)
+
   res.render('profile', { user })
+})
+
+// Assuming you're using Express.js
+router.post('/editPersonalInfo', ensureAuthenticated, async (req, res) => {
+  // Set editingPersonalInfo to true
+  /*  const user = req.body
+  console.log(req.session.user, 'req.session.user')
+  console.log(req.body, 'data from req.body')
+  res.json({ user, editingPersonalInfo: true }) */
+  //res.json('profile', { user, editingPersonalInfo: true })
+  try {
+    const userId = req.session.user.id
+    const user = req.body
+  
+
+    // Update the user in the database
+    await User.findByIdAndUpdate(userId, user)
+
+    // Get the updated user from the database
+    const updatedUser = await User.findById(userId)
+    
+    // Return the updated user as JSON response
+    
+    res.json({ user: updatedUser, editingPersonalInfo: true })
+  } catch (error) {
+    // Handle any errors that occurred during the database operations
+    console.log(error)
+    res
+      .status(500)
+      .json({ error: 'An error occurred while updating the user.' })
+  }
+})
+
+router.get('/editAddress', ensureAuthenticated, (req, res) => {
+  // Set editingAddress to true
+  const user = req.session.user
+  res.render('profile', { user, editingAddress: true })
 })
 
 export default router

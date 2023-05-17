@@ -22,7 +22,7 @@ export default function configurePassport(passport) {
             }
 
             if (isMatch) {
-              console.log('login success perfecto')
+          
               return done(null, user)
             } else {
               return done(null, false, { message: 'Password incorrect' })

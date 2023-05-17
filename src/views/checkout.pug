@@ -11,32 +11,32 @@ block content
             .col-md-12
               .mb-3
                 label(for="firstName") First name
-                input(type="text" class="form-control" id="firstName" placeholder="" value="" required="")
+                input(type="text" class="form-control" id="firstName" placeholder="" value=`${user.name}` required="")
           .row
             .col-md-12
               .mb-3
                 label(for="lastName") Last name
-                input(type="text" class="form-control" id="lastName" placeholder="" value="" required="")
+                input(type="text" class="form-control" id="lastName" placeholder="" value=`${user.name}` required="")
           .row
             .col-md-12
               .mb-3
                 label(for="email") Email
-                input(type="email" class="form-control" id="email" placeholder="you@example.com" value="email@doce.com" required="")
+                input(type="email" class="form-control" id="email" placeholder="you@example.com" value=`${user.email}` required="")
           .row
             .col-md-12
               .mb-3
-                label(for="address") Address
-                input(type="text" class="form-control" id="address" placeholder="1234 Main St" required="")
+                label(for="street") Street Address
+                input(type="text" class="form-control" id="street" placeholder="1234 Main St" value=`${user.street}` required="")
           .row
             .col-md-12
               .mb-3
-                label(for="address2") Address 2
-                input(type="text" class="form-control" id="address2" placeholder="Apartment or suite" value="")
+                label(for="city") City
+                input(type="text" class="form-control" id="city" placeholder="City " value=`${user.city}`)
           .row
             .col-md-6
               .mb-3
                 label(for="country") Country
-                select(class="form-control" id="country" required="")
+                select(class="form-control" id="country"  required="")
                   option(value="") Choose...
                   option(value="United States") United States
                   option(value="Canada") Canada
@@ -44,7 +44,7 @@ block content
             .col-md-6
               .mb-3
                 label(for="zip") Zip
-                input(type="text" class="form-control" id="zip" placeholder="" required="")
+                input(type="text" class="form-control" id="zip" placeholder="" value=`${user.postcode}` required="")
           hr(class="mb-4")
           h4(class="mb-3") Payment
           .d-block.my-3

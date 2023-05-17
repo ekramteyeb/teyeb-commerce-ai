@@ -18,6 +18,7 @@ export const getUserById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: 'User not found' })
     }
+    console.log('user from userRoutes', user)
     res.json(user)
   } catch (error) {
     console.error(error)
@@ -49,7 +50,7 @@ export const createUser = async (req, res) => {
 // Update a user
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body
+    const { name, email, password, phone } = req.body
     let user = await User.findById(req.params.id)
     if (!user) {
       return res.status(404).json({ msg: 'User not found' })
@@ -57,6 +58,8 @@ export const updateUser = async (req, res) => {
     user.name = name || user.name
     user.email = email || user.email
     user.password = password || user.password
+    user.phone = phone || user.phone
+    
     await user.save()
     res.json(user)
   } catch (error) {
